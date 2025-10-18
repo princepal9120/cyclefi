@@ -1,18 +1,18 @@
 version: '3.8'
 services:
   db:
-    container_name: cyclefi_db
+    container_name: envirochain_db
     image: postgres
     restart: always
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=admin
-      - POSTGRES_DB=cyclefi
+      - POSTGRES_DB=envirochain
       - POSTGRES_PASSWORD=secret
     volumes:
-      - db_data_cyclefi:/var/lib/postgresql/data
+      - db_data_envirochain:/var/lib/postgresql/data
 
 
 volumes:
-  db_data_cyclefi:
+  db_data_envirochain:
