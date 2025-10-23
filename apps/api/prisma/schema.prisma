@@ -13,3 +13,66 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Manufacturer {
+  id        Int      @unique
+  timestamp DateTime @default(now())
+
+  name     String
+  location String
+  contact  String
+
+  products Product[]
+}
+
+model Product {
+  id        Int      @unique
+  timestamp DateTime @default(now())
+
+  name String
+
+  manufacturer   Manufacturer @relation(fields: [manufacturerId], references: [id])
+  manufacturerId Int
+
+  productItems ProductItem[]
+  toxicItems   ToxicItem[]
+}
+
+model ProductItem {
+  id        Int      @id @default(autoincrement())
+  timestamp DateTime @default(now())
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+
+  status       ProductStatus
+  transactions Transaction[]
+}
+
+model Transaction {
+  id        Int      @id @default(autoincrement())
+  timestamp DateTime @default(now())
+
+  productItem   ProductItem @relation(fields: [productItemId], references: [id])
+  productItemId Int
+
+  status ProductStatus
+}
+
+model ToxicItem {
+  id        Int      @id @default(autoincrement())
+  timestamp DateTime @default(now())
+
+  name   String
+  weight Float
+
+  Product   Product @relation(fields: [productId], references: [id])
+  productId Int
+}
+
+enum ProductStatus {
+  MANUFACTURED
+  SOLD
+  RETURNED
+  RECYCLED
+}
